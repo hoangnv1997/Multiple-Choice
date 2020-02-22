@@ -1,5 +1,5 @@
 # Multiple-Choice
-Multiple Choice application cung cấp các bộ câu hỏi lý thuyết trắc nghiệm các môn Toán, Lý, Hóa, Sinh. Ứng dụng sử dụng drawerlayout và đọc RSS từ web site hiển thị lên listview, sử dụng SQLite lưu trữ truy xuất dữ liệu câu hỏi
+Multiple Choice application cung cấp các bộ câu hỏi lý thuyết trắc nghiệm các môn Toán, Lý, Hóa, Sinh. Ứng dụng sử dụng drawerlayout và đọc RSS từ web site hiển thị lên listview, sử dụng SQLite lưu trữ truy xuất dữ liệu câu hỏi. Số câu hỏi vẫn còn ít do chưa làm được CSDL. Mỗi môn chỉ có vài chục câu hỏi để demo (^_^).
 
 Screenshot
 
