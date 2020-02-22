@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/action_math"
+        android:orderInCategory="100"
+        android:title="Toán"
+         />
+    <item
+        android:id="@+id/action_physics"
+        android:orderInCategory="100"
+        android:title="Lý"
+         />
+    <item
+        android:id="@+id/action_chemistry"
+        android:orderInCategory="100"
+        android:title="Hóa"
+         />
+    <item
+        android:id="@+id/action_biology"
+        android:orderInCategory="100"
+        android:title="Sinh"
+        />
+    <item
+        android:id="@+id/action_all"
+        android:orderInCategory="100"
+        android:title="All"
+        />
+</menu>
