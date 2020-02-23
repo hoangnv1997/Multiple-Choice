@@ -1,6 +1,9 @@
 package com.hoangnguyen.multiplechoice.fragment;
 
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -9,11 +12,13 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.hoangnguyen.multiplechoice.R;
 import com.hoangnguyen.multiplechoice.activity.MainActivity;
@@ -41,16 +46,42 @@ public class HomeFragment extends Fragment {
     private ListView listNews;
     private ArrayList<News> newsArrayList = new ArrayList<News>();
     public static final String RSS_LINK = "https://thi.tuyensinh247.com/dap-an-de-thi-c16.rss";
+    private RelativeLayout errorLayout;
+    private Button btnRetry;
 
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        new ReadRSSData().execute(RSS_LINK);
+
         ((MainActivity) getActivity()).getSupportActionBar().setTitle("Home");
         View view = inflater.inflate(R.layout.fragment_home, container, false);
         listNews = view.findViewById(R.id.lv_news);
+        errorLayout = view.findViewById(R.id.errorLayout);
+        btnRetry = view.findViewById(R.id.btn_retry);
+
+        if (isOnline() == false) {
+
+            listNews.setVisibility(View.GONE);
+            errorLayout.setVisibility(View.VISIBLE);
+
+        } else {
+            new ReadRSSData().execute(RSS_LINK);
+        }
+        btnRetry.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (isOnline() == true) {
+                    errorLayout.setVisibility(View.GONE);
+                    listNews.setVisibility(View.VISIBLE);
+                    Fragment fragment = new HomeFragment();
+                    loadFragment(fragment);
+                } else {
+                    Toast.makeText(getActivity(), "No internet connection", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
 
         listNews.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -60,6 +91,7 @@ public class HomeFragment extends Fragment {
                 startActivity(intent);
             }
         });
+
 
         return view;
     }
@@ -93,6 +125,7 @@ public class HomeFragment extends Fragment {
         protected void onPostExecute(String s) {
 
             XMLDOMParser parser = new XMLDOMParser();
+
             Document document = parser.getDocument(s);
             NodeList nodeList = document.getElementsByTagName("item");
 
@@ -110,8 +143,24 @@ public class HomeFragment extends Fragment {
             }
             newsAdapter = new NewsAdapter(getActivity(), R.layout.item_listview_news, newsArrayList);
             listNews.setAdapter(newsAdapter);
-
             super.onPostExecute(s);
         }
+
+
+    }
+
+    private Boolean isOnline() {
+        ConnectivityManager cm = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo ni = cm.getActiveNetworkInfo();
+        if (ni != null && ni.isConnected()) {
+            return true;
+        }
+        return false;
+    }
+
+    public void loadFragment(Fragment fragment) {
+        FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
+        fragmentTransaction.replace(R.id.content_main, fragment);
+        fragmentTransaction.commit();
     }
 }

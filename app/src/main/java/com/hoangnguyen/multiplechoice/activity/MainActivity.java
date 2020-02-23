@@ -57,10 +57,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        if (isOnline()==false){
 
-            Toast.makeText(MainActivity.this, "No internet connection", Toast.LENGTH_SHORT).show();
-        }
 
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
@@ -172,12 +169,5 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         return false;
     }
 
-    private Boolean isOnline() {
-        ConnectivityManager cm = (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo ni = cm.getActiveNetworkInfo();
-        if(ni != null && ni.isConnected()) {
-            return true;
-        }
-        return false;
-    }
+
 }
