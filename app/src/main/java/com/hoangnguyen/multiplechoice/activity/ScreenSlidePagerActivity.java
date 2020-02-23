@@ -18,6 +18,7 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.GridView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.hoangnguyen.multiplechoice.R;
 import com.hoangnguyen.multiplechoice.adapter.CheckAnswerAdapter;
@@ -88,7 +89,8 @@ public class ScreenSlidePagerActivity extends FragmentActivity {
         tvTimer = findViewById(R.id.tvTimer);
         tvScore = findViewById(R.id.tvScore);
 
-        timer = new CountDown(15 * 60 * 1000, 1000);
+        timer = new CountDown((15 * 60 * 1000) + 1000, 1000);
+
         tvCheckAns.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -230,7 +232,12 @@ public class ScreenSlidePagerActivity extends FragmentActivity {
 
         @Override
         public void onFinish() {
-            tvTimer.setText("00:00");  //SetText cho textview hiện thị thời gian.
+            tvTimer.setText("00:00");
+            Toast.makeText(ScreenSlidePagerActivity.this, "Hết thời gian làm bài.", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(ScreenSlidePagerActivity.this, ResultTestActivity.class);
+            intent.putExtra("list_ques", questionArrayList);
+            startActivity(intent);
+            //SetText cho textview hiện thị thời gian.
         }
 
         /**
